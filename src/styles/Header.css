@@ -1,0 +1,11 @@
+.headerContainer img{
+    width:50px;
+}
+
+
+
+.headerContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

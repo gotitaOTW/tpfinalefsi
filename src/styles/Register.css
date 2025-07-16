@@ -1,0 +1,81 @@
+:root {
+  --color-base: #1c1c1c;
+  --color-resalte: #535bf2;
+  --color-resalte-hover: #3a42c5;
+  --bg-light: #f8f8f8;
+  --input-bg: #ffffff;
+  --border-radius: 8px;
+  --shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.Register-container {
+  background-color: var(--bg-light);
+  padding: 30px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: system-ui, sans-serif;
+}
+
+.Register-container h2 {
+  margin-bottom: 20px;
+  color: var(--color-base);
+}
+
+.Register-container form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+}
+
+.Register-container input {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  background-color: var(--input-bg);
+  font-size: 1rem;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.Register-container input:focus {
+  border-color: var(--color-resalte);
+  outline: none;
+  box-shadow: 0 0 4px var(--color-resalte);
+}
+
+.Register-container button {
+  padding: 12px;
+  background-color: var(--color-resalte);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.Register-container button:hover {
+  background-color: var(--color-resalte-hover);
+}
+
+.Register-container p {
+  font-size: 0.95rem;
+  color: var(--color-base);
+  text-align: center;
+}
+
+.Register-container a {
+  margin-left: 5px;
+  color: var(--color-resalte);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.Register-container a:hover {
+  color: var(--color-resalte-hover);
+  text-decoration: underline;
+}

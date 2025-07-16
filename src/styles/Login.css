@@ -1,0 +1,102 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: #f9f9ff;
+  color: #222222;
+  overflow-x: hidden;
+}
+
+:root {
+  --color-base: #222222;
+  --color-resalte: #3a5afe;
+  --color-resalte-hover: #1e3ae8;
+  --color-error: #d93025;
+  --radio-borde: 10px;
+  --transition: 0.3s ease;
+  --fondo-form: #fff;
+}
+
+.Login-container {
+  min-height: 75vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9ff;
+}
+
+.Login-form {
+  background-color: var(--fondo-form);
+  padding: 30px 35px;
+  border-radius: var(--radio-borde);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  user-select: none;
+  color: var(--color-base);
+}
+
+.Login-form h2 {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: var(--color-resalte);
+  text-align: center;
+}
+
+.Login-form label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.Login-form input[type="text"],
+.Login-form input[type="password"] {
+  padding: 10px 12px;
+  border-radius: var(--radio-borde);
+  border: 1.5px solid #ccc;
+  font-size: 1rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline-offset: 2px;
+}
+
+.Login-form input[type="text"]:focus,
+.Login-form input[type="password"]:focus {
+  border-color: var(--color-resalte);
+  box-shadow: 0 0 5px var(--color-resalte);
+}
+
+.error {
+  color: var(--color-error);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: -10px;
+}
+
+.Login-form button[type="submit"] {
+  margin-top: 15px;
+  padding: 12px 0;
+  background-color: var(--color-resalte);
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: var(--radio-borde);
+  cursor: pointer;
+  transition: background-color var(--transition), transform 0.15s ease;
+  user-select: none;
+}
+
+.Login-form button[type="submit"]:hover {
+  background-color: var(--color-resalte-hover);
+  transform: scale(1.05);
+}

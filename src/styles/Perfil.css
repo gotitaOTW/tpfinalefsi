@@ -1,0 +1,53 @@
+:root {
+  --color-base: #1c1c1c;
+  --color-resalte: #535bf2;
+  --color-resalte-hover: #3a42c5;
+  --bg-light: #f9f9f9;
+  --border-radius: 8px;
+  --shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-container {
+  max-width: 500px;
+  margin: 3rem auto;
+  padding: 30px;
+  background-color: var(--bg-light);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  font-family: system-ui, sans-serif;
+  color: var(--color-base);
+}
+
+.perfil-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--color-base);
+}
+
+.perfil-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 1rem;
+}
+
+.perfil-info p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.cerrar-sesion-btn {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: var(--color-resalte);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cerrar-sesion-btn:hover {
+  background-color: var(--color-resalte-hover);
+}
