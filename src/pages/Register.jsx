@@ -12,7 +12,8 @@ const Register = () => {
     nombre: "",
     apellido: "",
     email: "",
-    contrasena: ""
+    contrasena: "",
+    esAdmin:false,
   });
 
   const navigate = useNavigate();
@@ -29,12 +30,6 @@ const Register = () => {
       alert("Este email ya está registrado. Haga click en iniciar sesión");
       return;
     }
-
-    const nuevoUsuario = {
-      id: usuarios.length + 1,
-      esAdmin:false,
-      ...form
-    };
 
     setUsuarios([...usuarios, nuevoUsuario]);
     setUsuario(nuevoUsuario);

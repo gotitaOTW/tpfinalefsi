@@ -1,10 +1,12 @@
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contextos/UserContext";
+import api from "../api";
 import "../styles/Login.css";
+import jwt_decode from "jwt-decode";
 
 const Login = () => {
-  const { setUsuario, usuarios } = useContext(UserContext);
+  const { setUsername, setToken } = useContext(UserContext); // <-- Usá los setters del contexto
 
   const navigate = useNavigate();
 
@@ -12,21 +14,21 @@ const Login = () => {
   const [contrasena, setContrasena] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const usuario = usuarios.find(u => u.email === email);
-
-    if (!usuario) {
-      setError("No existe un usuario con ese correo.");
-    } else if (usuario.contrasena !== contrasena) {
-      setError("Contraseña incorrecta.");
-    } else {
-      setUsuario(usuario);
+    try {
+      const response = await api.post("users/login", { email, contrasena });
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      const payload = jwt_decode(token);
+      setUsername(payload.username);
+      setToken(token);
       navigate("/");
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+      setError(error.response.data.message);
     }
   };
-
   return (
     <div className="Login-container">
       <form className="Login-form" onSubmit={handleSubmit}>

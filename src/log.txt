@@ -1,0 +1,20 @@
+
+entender y aprovechar las mejores soluciones de gpt, como la de login y register
+y muchas otras
+
+avanzar, aprender de los que saben (gpt) y llegar hasta su nivel para construir a partir de ahí
+para solucionar todas estas cosas mucho más rápido y poder hacer cosas más grandes.
+lo tengo disponible 24/7 y gratis
+
+hacer rco de axios, context y localstorage
+context: como crear un contexto, que significa cada parte, como guardo en contexto como tomo cosas de ahí
+lo mismo localstorage y axios esta en iCloud Notes
+
+luego
+
+cerrar login y register
+seguir con las de put, post, delete, etc etc, son re fáciles con un axios fresco
+así que: como es fácil con axios fresco, refrescar axios y no relajarse. meterle más, mas fuerte, mejor y la rompés pero no solo por eso
+sino tambien para el objetivo: ser un gran progrmador. uno de los mejores. para ganarle al resto? no. para tener libertas. si tengo el nivel de los mejoresp
+progrmadores como gpt, voy a poder hacer cosas tremendas, con ideas que se me ocurran aplicados a mis problema sintiendo orgullo y más emociones.
+todas cosas que gpt, con su nivel, no puede hacer.
