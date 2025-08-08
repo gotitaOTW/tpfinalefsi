@@ -5,6 +5,7 @@ import './App.css'
 import  Register  from './pages/Register.jsx';
 import  Login  from './pages/Login.jsx';
 import Perfil from './pages/Perfil.jsx';
+import Events from './pages/Events.jsx';
 
 
 
@@ -18,6 +19,7 @@ function App() {
         <Route path='/register' element={<Register />}></Route>
         <Route path='/perfil' element={<Perfil/>}></Route>
         <Route path='/login' element={<Login />}></Route>
+        <Route path='/events' element={<Events />}></Route>
       </Route>
     </Routes>
     </BrowserRouter>

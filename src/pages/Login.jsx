@@ -17,7 +17,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post("users/login", { email, contrasena });
+      const response = await api.post("/users/login", { email, contrasena });
       const token = response.data.token;
       localStorage.setItem("token", token);
       const payload = jwt_decode(token);

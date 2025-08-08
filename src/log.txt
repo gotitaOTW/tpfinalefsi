@@ -18,3 +18,23 @@ así que: como es fácil con axios fresco, refrescar axios y no relajarse. meter
 sino tambien para el objetivo: ser un gran progrmador. uno de los mejores. para ganarle al resto? no. para tener libertas. si tengo el nivel de los mejoresp
 progrmadores como gpt, voy a poder hacer cosas tremendas, con ideas que se me ocurran aplicados a mis problema sintiendo orgullo y más emociones.
 todas cosas que gpt, con su nivel, no puede hacer.
+
+8/8
+
+terminados login y register
+terminados 2 y 3
+queda:
+4 (detalle evento con el tema de enroll y eso, fácil y divertido)
+5: ver los eventos propios (traerlos y para mostrar reutilizar card), fácil. único temita: editar eventos, ojo ahí. guardar valores nuevos y hacer request con axios y token
+6 y 7
+
+6:
+form para crear evento, facilísimo. post con axios y los datos, mostrar error si falla algo.
+
+
+7: forms para crear, editar y eliminar ubicaciones. luego estas tienen q aparecer en el 6, el form para crear eventos. se maneja todo el backend (hermoso)
+
+
+funcionalidad xtra:
+cuando veas un detalle evento, si idCreator y idToken son igualers ( el evento es propio) mostrar botón de eliminar evento
+
