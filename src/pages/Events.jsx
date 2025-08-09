@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import api from "../api";
 import axios from 'axios';
 import EventCard from "../components/EventCard";
-import './Events.css';
+import "../styles/Events.css";
+
 
 const Events = () => {
     const [events, setEvents] = useState(null);
@@ -15,7 +16,8 @@ const Events = () => {
         try {
             const response = await axios.get(`/event${filtros.name || filtros.startdate ? `?name=${filtros.name}&startdate=${filtros.startdate}` : '' }`);
             const eventsApi = response.data.returnArray;
-            setEvents(eventsApi);
+            const enabledEvents = eventsApi.filter((ev)=>ev.enabled_for_enrollment);
+            setEvents(enabledEvents);
         } catch (error) {
             console.error('Error trayendo eventos:', error);
         }
@@ -104,10 +106,10 @@ const Events = () => {
             
             <div className="events-list">
                 {events.map((event) => (
-                    <EventCard 
+                       <EventCard 
                         key={event.id} 
                         event={event} 
-                    />
+                    /> 
                 ))}
             </div>
         </div>

@@ -6,6 +6,8 @@ import  Register  from './pages/Register.jsx';
 import  Login  from './pages/Login.jsx';
 import Perfil from './pages/Perfil.jsx';
 import Events from './pages/Events.jsx';
+import DetailEvent from './pages/DetailEvent.jsx';
+
 
 
 
@@ -20,6 +22,7 @@ function App() {
         <Route path='/perfil' element={<Perfil/>}></Route>
         <Route path='/login' element={<Login />}></Route>
         <Route path='/events' element={<Events />}></Route>
+        <Route path='/event' element={<DetailEvent />}></Route>
       </Route>
     </Routes>
     </BrowserRouter>

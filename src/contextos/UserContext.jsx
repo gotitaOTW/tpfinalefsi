@@ -5,6 +5,7 @@ export const UserContext=createContext();//crea el objeto de contexto
 
 export const UserProvider=({children})=>{//crea un provider 
     const [username, setUsuarname] = useState(null);//guarda localmente el valor para pasarselo al provider
+    const [userId,setUserId]=useState(null);
     const [token, setToken] = useState(() => localStorage.getItem("token"));
       
     useEffect(() => {
@@ -12,6 +13,7 @@ export const UserProvider=({children})=>{//crea un provider
         try {
           const payload = jwt_decode(token);
           setUsername(payload.username);
+          setUserId(payload.id);
         } catch (error) {
           setUsername(null);
           setToken(null);
@@ -29,6 +31,7 @@ export const UserProvider=({children})=>{//crea un provider
             setUsername,
             token,
             setToken,
+            userId,
           }}
         >
         {/* al provider se le pasan las variables que debe pasarle a todos los hijos */}
