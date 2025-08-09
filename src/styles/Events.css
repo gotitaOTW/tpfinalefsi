@@ -63,6 +63,52 @@
     gap: 10px;
 }
 
+/* Toggle estilizado (sigue siendo checkbox real) */
+.toggle { display: inline-flex; align-items: center; gap: 8px; }
+.toggle-input { position: absolute; opacity: 0; width: 0; height: 0; }
+.toggle-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px 6px 44px;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  cursor: pointer;
+  user-select: none;
+  background: #fff;
+}
+.toggle-dot {
+  position: absolute;
+  left: 8px;
+  width: 28px;
+  height: 16px;
+  border-radius: 999px;
+  background: #e6e6e6;
+  box-shadow: inset 0 0 0 2px #ddd;
+}
+.toggle-dot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: left 0.2s ease;
+}
+.toggle-input:checked + .toggle-pill .toggle-dot {
+  background: #cfe3f7;
+  box-shadow: inset 0 0 0 2px #3498db55;
+}
+.toggle-input:checked + .toggle-pill .toggle-dot::after {
+  left: 14px;
+}
+.toggle-pill:hover { border-color: #bbb; }
+
 @media (max-width: 600px) {
     .search-container {
         flex-direction: column;

@@ -1,16 +1,19 @@
-import { useEffect, useState } from "react";    
+import { useContext, useEffect, useState } from "react";    
 import api from "../api";
 import axios from 'axios';
 import EventCard from "../components/EventCard";
 import "../styles/Events.css";
+import { UserContext } from "../contextos/UserContext";
+import { UserContext } from "../contextos/UserContext";
 
 
 const Events = () => {
     const [events, setEvents] = useState(null);
     const [filtros, setFiltros] = useState({
         name: '',
-        startdate: ''
+        startdate: '',
     });
+    const {userId} = useContext(UserContext); 
 
     const fetchEvents = async () => {//traer eventos
         try {
@@ -31,6 +34,21 @@ const Events = () => {
             ...prev,
             [name]: value
         }));
+    };
+
+    const filtrarAEventosPropios=()=>{
+        const eventosPropios=events.filter((e)=>e.id_creator_user===userId);
+        setEvents(eventosPropios);
+    }
+
+    const handleToggleMyEvents = (e) => {
+        const checked = e.target.checked;
+        if(checked){
+            filtrarAEventosPropios();
+        }
+        else{
+            fetchEvents();
+        }
     };
 
     const validarFecha = (startdate) => {
@@ -97,7 +115,22 @@ const Events = () => {
                             className="date-input"
                         />
                     </div>
-                    
+                    {/* Mis eventos (checkbox estilizado) */}
+                    <div className="input-group">
+                        <div className="toggle">
+                            <input
+                                id="myEvents"
+                                type="checkbox"
+                                className="toggle-input"
+                                onChange={handleToggleMyEvents}
+                            />
+                            <label htmlFor="myEvents" className="toggle-pill">
+                                <span className="toggle-dot" />
+                                Mis eventos
+                            </label>
+                        </div>
+                    </div>
+
                     <button type="submit" className="filter-btn">
                         Filtrar
                     </button>

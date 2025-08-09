@@ -7,7 +7,7 @@ import axios from 'axios'
 
 const DetailEvent = () => {
     const [isBusy,setIsBusy]=useState(false);
-    const {userId} = useContext(UserProvider);
+    const [errorMsj, setErrorMsj] = useState(null);
     const [isEnrrolled,setIsEnrolled] = useState(null);
   const { state } = useLocation();
   const event = state.event;
@@ -17,7 +17,7 @@ const DetailEvent = () => {
   const evLocAddress = evLoc.full_address;
   const evLocLocationName = evLoc.location.name;
   const evLocProvinceName = evLoc.location.province.name;
-  const {token} = useContext(UserContext);
+  const {token, userId} = useContext(UserContext);
 
     const fetchSub = async ()=>{
         const respuesta = await axios.get(`/event/sub?idUsuario=${userId}&idEvento=${event.id}`);
@@ -28,8 +28,34 @@ const DetailEvent = () => {
 
   if(!event)return <h1>Event not found</h1>
 
-  const handleToggleInscripcion = () => {
-    if(!isEnrolled)
+  const handleToggleInscripcion = async () => {
+    try {
+      setIsBusy(true);
+      if(!isEnrrolled){
+        const respuesta = await axios.post(`/event/${event.id}/enrollment`,{},{headers:{Authorization:`Bearer ${token}`}});
+        setIsEnrolled(true);
+      }
+      else{
+        const respuesta = await axios.delete(`/event/${event.id}/enrollment`,{},{headers:{Authorization:`Bearer ${token}`}});
+        setIsEnrolled(false);
+      }
+      setErrorMsj(null);
+    } catch (err) {
+      const status = err.response?.status;
+      const backendMsg = err.response?.data?.message;
+    
+      if (status === 400) {
+        setErrorMsj(backendMsg || 'Solicitud inválida.');
+      } else if (status === 401) {
+        setErrorMsj('Tenés que iniciar sesión para inscribirte.');
+      } else if (status === 404) {
+        setErrorMsj('Evento no encontrado.');
+      } else {
+        setErrorMsj('Algo salió mal. Intentalo de nuevo.');
+      }
+    }finally{
+      setIsBusy(false);
+    }
   };
 
   return (
@@ -93,6 +119,7 @@ const DetailEvent = () => {
             {isBusy ? 'Procesando...' : isEnrolled ? 'Desinscribirme' : 'Inscribirme'}
           </button>
         </div>
+        {errorMsj && <div className="alert-error">{errorMsj}</div>}
       </div>
     </div>
   );
