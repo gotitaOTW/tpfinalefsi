@@ -29,7 +29,7 @@ const EventCard = ({ event }) => {
             
             <button 
                 className="ir-boton"
-                onClick={() => navigate(`/events/${event.id}`, {state:  {event } })}
+                onClick={() => navigate(`/event`, {state:  {event } })}
             >
                 Quiero ir
             </button>

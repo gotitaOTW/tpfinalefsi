@@ -8,7 +8,7 @@ import axios from 'axios'
 const DetailEvent = () => {
     const [isBusy,setIsBusy]=useState(false);
     const [errorMsj, setErrorMsj] = useState(null);
-    const [isEnrrolled,setIsEnrolled] = useState(null);
+    const [isEnrolled,setIsEnrolled] = useState(null);
   const { state } = useLocation();
   const event = state.event;
   const creatorUsername = event.creator_user.username;
@@ -31,7 +31,7 @@ const DetailEvent = () => {
   const handleToggleInscripcion = async () => {
     try {
       setIsBusy(true);
-      if(!isEnrrolled){
+      if(!isEnrolled){
         const respuesta = await axios.post(`/event/${event.id}/enrollment`,{},{headers:{Authorization:`Bearer ${token}`}});
         setIsEnrolled(true);
       }
@@ -114,8 +114,23 @@ const DetailEvent = () => {
           </div>
         </div>
 
+        {token && userId === event.creator_user.id && (
+          <button 
+            className="btn-secondary" 
+            onClick={() => navigate('/edit-event', { 
+              state: { 
+                event: event
+              } 
+            })}
+            style={{ marginBottom: '10px' }}
+          >
+            Editar
+          </button>
+        )}
+        
+
         <div className="detail-actions">
-          <button disable={isBusy} className="btn-primary" onClick={handleToggleInscripcion}>
+          <button disabled={isBusy} className="btn-primary" onClick={handleToggleInscripcion}>
             {isBusy ? 'Procesando...' : isEnrolled ? 'Desinscribirme' : 'Inscribirme'}
           </button>
         </div>
