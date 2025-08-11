@@ -1,19 +1,14 @@
-import { useContext, useState } from "react";
-import { UserContext } from "../contextos/UserContext";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import '../styles/Register.css';
-
-
+import api from '../api';
 
 const Register = () => {
-  const { usuarios, setUsuarios, setUsuario } = useContext(UserContext);
   const [form, setForm] = useState({
-    nombre: "",
-    apellido: "",
-    email: "",
-    contrasena: "",
-    esAdmin:false,
+    first_name: "",
+    last_name: "",
+    username: "",
+    password: "",
   });
 
   const navigate = useNavigate();
@@ -22,33 +17,31 @@ const Register = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const emailExistente = usuarios.find(u => u.email === form.email);
-    if (emailExistente) {
-      alert("Este email ya está registrado. Haga click en iniciar sesión");
-      return;
+    try{
+      await api.post('/user/register', form);
+      window.alert('Registro exitoso. Ahora puede iniciar sesión.');
+      navigate('/login');
+    }catch(err){
+      console.error(err);
+      window.alert(err?.response?.data?.message || 'No se pudo registrar.');
     }
-
-    setUsuarios([...usuarios, nuevoUsuario]);
-    setUsuario(nuevoUsuario);
-    navigate("/");
   };
 
   return (
     <div className="Register-container" style={{ maxWidth: "400px", margin: "2rem auto" }}>
       <h2>Crear cuenta</h2>
       <form onSubmit={handleSubmit}>
-        <input name="nombre" placeholder="Nombre" onChange={handleChange} required />
-        <input name="apellido" placeholder="Apellido" onChange={handleChange} required />
-        <input name="email" placeholder="Email" onChange={handleChange} required />
-        <input name="contrasena" type="password" placeholder="Contraseña" onChange={handleChange} required />
+        <input name="first_name" placeholder="Nombre" value={form.first_name} onChange={handleChange} required />
+        <input name="last_name" placeholder="Apellido" value={form.last_name} onChange={handleChange} required />
+        <input name="username" placeholder="Email" value={form.username} onChange={handleChange} required />
+        <input name="password" type="password" placeholder="Contraseña" value={form.password} onChange={handleChange} required />
         <button type="submit">Registrarse</button>
       </form>
       <p style={{ marginTop: "1rem" }}>
-        ¿Ya tienes cuenta?
-        <Link to="/login" style={{ color: "blue", textDecoration: "underline" }}>
+        ¿Ya tienes cuenta?{' '}
+        <Link to="/login" className="link-crear-cuenta">
             Inicia sesión
         </Link>
      </p>

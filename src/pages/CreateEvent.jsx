@@ -1,12 +1,17 @@
 import EventForm from "../components/EventForm";
-import axios from axios;
+import api from '../api';
+import { useContext } from 'react';
+import { UserContext } from '../contextos/UserContext';
+
 const CreateEvent = () => {
-    const onSubmit = (formData) =>{
+    const { token } = useContext(UserContext);
+
+    const onSubmit = async (formData) =>{
         try {
-            axios.post('/event', formData,{headers:{Authorization: `Bearer ${token}`}});
-            windows.alert(`Evento ${formData.name} agregado!`);
+            await api.post('/event/', formData,{headers:{Authorization: `Bearer ${token}`}});
+            window.alert(`Evento ${formData.name} agregado!`);
         } catch (error) {
-            windows.alert(`Evento ${formData.name} no puedo ser agregado. Reintentar.`);
+            window.alert(`Evento ${formData.name} no pudo ser agregado. Reintentar.`);
             console.error(error);
         }
     }

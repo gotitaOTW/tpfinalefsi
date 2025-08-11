@@ -1,42 +1,66 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-import { UserContext, UserProvider } from '../contextos/UserContext';
+import { UserContext } from '../contextos/UserContext';
 import '../styles/DetailEvent.css';
 import { formatDate, formatDuration, formatPrice } from '../utils/formatters';
-import axios from 'axios'
+import api from '../api'
 
 const DetailEvent = () => {
     const [isBusy,setIsBusy]=useState(false);
     const [errorMsj, setErrorMsj] = useState(null);
     const [isEnrolled,setIsEnrolled] = useState(null);
-  const { state } = useLocation();
-  const event = state.event;
-  const creatorUsername = event.creator_user.username;
-  const evLoc = event.event_location;
-  const evLocName = evLoc.name;
-  const evLocAddress = evLoc.full_address;
-  const evLocLocationName = evLoc.location.name;
-  const evLocProvinceName = evLoc.location.province.name;
-  const {token, userId} = useContext(UserContext);
+    const [event, setEvent] = useState(null);
 
-    const fetchSub = async ()=>{
-        const respuesta = await axios.get(`/event/sub?idUsuario=${userId}&idEvento=${event.id}`);
-        setIsEnrolled(respuesta.data.subscribed); 
-    }
-    
-  useEffect(()=>{fetchSub},[]);
+    const { state } = useLocation();
+    const navigate = useNavigate();
+    const passed = state?.event;
+    const {token, userId} = useContext(UserContext);
 
-  if(!event)return <h1>Event not found</h1>
+    const loadDetail = async (id) => {
+      try{
+        const resp = await api.get(`/event/${id}`);
+        setEvent(resp.data);
+      }catch(err){
+        setErrorMsj(err?.response?.data?.message || 'No se pudo cargar el evento');
+      }
+    };
+
+    useEffect(()=>{
+      const id = passed?.id;
+      if (id) loadDetail(id);
+    },[passed?.id]);
+
+    useEffect(()=>{
+      const fetchSub = async ()=>{
+        if(!event || !userId) return;
+        try{
+          const respuesta = await api.get(`/event/sub?idUsuario=${userId}&idEvento=${event.id}`);
+          setIsEnrolled(respuesta.data.subscribed); 
+        }catch(e){
+          console.error(e);
+        }
+      };
+      fetchSub();
+    },[event?.id, userId]);
+
+    if(!event)return <h1>Event not found</h1>
+
+    const evLoc = event.event_location;
+    const creatorUsername = event.creator_user?.username;
+    const evLocName = evLoc?.name;
+    const evLocAddress = evLoc?.full_address;
+    const evLocLocationName = evLoc?.location?.name;
+    const evLocProvinceName = evLoc?.location?.province?.name;
 
   const handleToggleInscripcion = async () => {
     try {
       setIsBusy(true);
       if(!isEnrolled){
-        const respuesta = await axios.post(`/event/${event.id}/enrollment`,{},{headers:{Authorization:`Bearer ${token}`}});
+        await api.post(`/event/${event.id}/enrollment/`,{}, {headers:{Authorization:`Bearer ${token}`}});
         setIsEnrolled(true);
       }
       else{
-        const respuesta = await axios.delete(`/event/${event.id}/enrollment`,{},{headers:{Authorization:`Bearer ${token}`}});
+        await api.delete(`/event/${event.id}/enrollment/`, {headers:{Authorization:`Bearer ${token}`}});
         setIsEnrolled(false);
       }
       setErrorMsj(null);

@@ -3,50 +3,55 @@ import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contextos/UserContext";
 import api from "../api";
 import "../styles/Login.css";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
-  const { setUsername, setToken } = useContext(UserContext); // <-- Usá los setters del contexto
-
+  const { setUsername, setToken } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [contrasena, setContrasena] = useState("");
+  const [username, setUsernameInput] = useState("");
+  const [password, setPasswordInput] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     try {
-      const response = await api.post("/users/login", { email, contrasena });
-      const token = response.data.token;
+      const response = await api.post("/user/login", { username, password });
+      const { success, message, token } = response.data || {};
+      if (!success) {
+        setError(message || "Credenciales inválidas");
+        return;
+      }
       localStorage.setItem("token", token);
-      const payload = jwt_decode(token);
+      const payload = jwtDecode(token);
       setUsername(payload.username);
       setToken(token);
       navigate("/");
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-      setError(error.response.data.message);
+    } catch (err) {
+      const message = err?.response?.data?.message || "Error al iniciar sesión";
+      setError(message);
     }
   };
+
   return (
     <div className="Login-container">
       <form className="Login-form" onSubmit={handleSubmit}>
         <h2>Iniciar sesión</h2>
 
-        <label>Email</label>
+        <label>Usuario (email)</label>
         <input
           type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsernameInput(e.target.value)}
           required
         />
 
         <label>Contraseña</label>
         <input
           type="password"
-          value={contrasena}
-          onChange={(e) => setContrasena(e.target.value)}
+          value={password}
+          onChange={(e) => setPasswordInput(e.target.value)}
           required
         />
 

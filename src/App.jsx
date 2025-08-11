@@ -9,6 +9,7 @@ import Events from './pages/Events.jsx';
 import DetailEvent from './pages/DetailEvent.jsx';
 import EditEvent from './pages/EditEvent.jsx';
 import CreateEvent from './pages/CreateEvent.jsx'
+import Ubicaciones from './pages/Ubicaciones.jsx'
 
 
 
@@ -26,7 +27,8 @@ function App() {
         <Route path='/events' element={<Events />}></Route>
         <Route path='/event' element={<DetailEvent />}></Route>
         <Route path='/edit-event' element={<EditEvent />}></Route>
-        <Route path='/create-event' element={<Create />}></Route>
+        <Route path='/create-event' element={<CreateEvent />}></Route>
+        <Route path='/ubicaciones' element={<Ubicaciones />}></Route>
       </Route>
     </Routes>
     </BrowserRouter>

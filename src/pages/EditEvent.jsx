@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../contextos/UserContext';
-import axios from 'axios';
+import api from '../api';
 import '../styles/EditEvent.css';
 import EventForm from '../components/EventForm';
 
@@ -18,12 +18,12 @@ const EditEvent = () => {
 
   const onSubmit = async (formData) => {
     try {
-      const data=[event.id,...formData];
-    await axios.put(`/event`, data, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    window.alert(`El evento ${event.name} fue actualizado.`);
-    navigate(`/event`, { state: { event } });
+      const payload = { id: event.id, ...formData };
+      await api.put(`/event/`, payload, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      window.alert(`El evento ${event.name} fue actualizado.`);
+      navigate(`/event`, { state: { event } });
     } catch (error) {
       console.error(error);
       window.alert('Error al editar evento. Por favor, inténtalo de nuevo.');
@@ -36,7 +36,7 @@ const EditEvent = () => {
     if (!confirmar) return;
 
     try {
-      await axios.delete(`/event/${event.id}`, {
+      await api.delete(`/event/${event.id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       window.alert(`El evento "${event.name}" fue eliminado con éxito.`);

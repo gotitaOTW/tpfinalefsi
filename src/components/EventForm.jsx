@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
 import { UserContext } from '../contextos/UserContext';
 import { validateEventForm } from '../utils/formatters';
+import api from '../api';
 
 const EventForm = ({ onSubmit, event=null }) => {
     

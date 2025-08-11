@@ -1,32 +1,42 @@
-import { useContext, useEffect, useState } from "react";    
+import { useEffect, useState } from "react";    
 import api from "../api";
-import axios from 'axios';
 import EventCard from "../components/EventCard";
 import "../styles/Events.css";
-import { UserContext } from "../contextos/UserContext";
-import { UserContext } from "../contextos/UserContext";
-
 
 const Events = () => {
     const [events, setEvents] = useState(null);
     const [filtros, setFiltros] = useState({
         name: '',
         startdate: '',
+        tag: '',
+        page: 1,
+        size: 10,
     });
-    const {userId} = useContext(UserContext); 
 
-    const fetchEvents = async () => {//traer eventos
+    const buildQuery = () => {
+        const params = new URLSearchParams();
+        if (filtros.name) params.append('name', filtros.name);
+        if (filtros.startdate) params.append('startdate', filtros.startdate);
+        if (filtros.tag) params.append('tag', filtros.tag);
+        if (filtros.page) params.append('page', String(filtros.page));
+        if (filtros.size) params.append('size', String(filtros.size));
+        const qs = params.toString();
+        return qs ? `/event/?${qs}` : '/event/';
+    };
+
+    const fetchEvents = async () => {
         try {
-            const response = await axios.get(`/event${filtros.name || filtros.startdate ? `?name=${filtros.name}&startdate=${filtros.startdate}` : '' }`);
-            const eventsApi = response.data.returnArray;
-            const enabledEvents = eventsApi.filter((ev)=>ev.enabled_for_enrollment);
-            setEvents(enabledEvents);
+            const url = buildQuery();
+            const response = await api.get(url);
+            const list = response.data?.events || response.data?.returnArray || response.data;
+            setEvents(Array.isArray(list) ? list : []);
         } catch (error) {
             console.error('Error trayendo eventos:', error);
+            setEvents([]);
         }
     };
     
-    useEffect(() => fetchEvents(), []);
+    useEffect(() => { fetchEvents(); }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -36,45 +46,9 @@ const Events = () => {
         }));
     };
 
-    const filtrarAEventosPropios=()=>{
-        const eventosPropios=events.filter((e)=>e.id_creator_user===userId);
-        setEvents(eventosPropios);
-    }
-
-    const handleToggleMyEvents = (e) => {
-        const checked = e.target.checked;
-        if(checked){
-            filtrarAEventosPropios();
-        }
-        else{
-            fetchEvents();
-        }
-    };
-
-    const validarFecha = (startdate) => {
-        if (startdate) {
-            const selectedDate = new Date(startdate);
-            const hoy = new Date();
-            hoy.setHours(0, 0, 0, 0);
-            
-            if (selectedDate < hoy) {
-                return 'No se pueden seleccionar fechas pasadas';
-            }
-        }
-        return null;
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        const dateError = validarFecha(filtros.startdate);
-
-        if (dateError) { 
-            alert(dateError);
-        }
-        else{
-            fetchEvents();
-        }
+        fetchEvents();
     };
 
     const getMinDate = () => {
@@ -88,11 +62,8 @@ const Events = () => {
 
     return (
         <div className="events-container">
-            {/* form */}
             <form onSubmit={handleSubmit} className="filters-form">
                 <div className="search-container"> 
-                    {/* contenedor de filtros */}
-                    {/* por texto */}
                     <div className="input-group">
                         <input
                             type="text"
@@ -104,31 +75,25 @@ const Events = () => {
                         />
                         <span className="search-icon">🔍</span>
                     </div>
-                    {/* por fecha */}
                     <div className="input-group">
                         <input
                             type="date"
                             name="startdate"
                             value={filtros.startdate}
                             onChange={handleInputChange}
-                            min={getMinDate()}// fecha minima
+                            min={getMinDate()}
                             className="date-input"
                         />
                     </div>
-                    {/* Mis eventos (checkbox estilizado) */}
                     <div className="input-group">
-                        <div className="toggle">
-                            <input
-                                id="myEvents"
-                                type="checkbox"
-                                className="toggle-input"
-                                onChange={handleToggleMyEvents}
-                            />
-                            <label htmlFor="myEvents" className="toggle-pill">
-                                <span className="toggle-dot" />
-                                Mis eventos
-                            </label>
-                        </div>
+                        <input
+                            type="text"
+                            name="tag"
+                            value={filtros.tag}
+                            onChange={handleInputChange}
+                            placeholder="Tag"
+                            className="search-input"
+                        />
                     </div>
 
                     <button type="submit" className="filter-btn">
