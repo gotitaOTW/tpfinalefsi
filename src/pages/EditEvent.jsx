@@ -17,12 +17,18 @@ const EditEvent = () => {
   }
 
   const onSubmit = async (formData) => {
-    const data=[event.id,...formData];
+    try {
+      const data=[event.id,...formData];
     await axios.put(`/event`, data, {
       headers: { Authorization: `Bearer ${token}` }
     });
     window.alert(`El evento ${event.name} fue actualizado.`);
     navigate(`/event`, { state: { event } });
+    } catch (error) {
+      console.error(error);
+      window.alert('Error al editar evento. Por favor, inténtalo de nuevo.');
+    }
+    
   };
 
   const onDelete = async () => {
@@ -48,7 +54,7 @@ const EditEvent = () => {
         <EventForm onSubmit={onSubmit} event={event}/>
       </div>
       <button onClick={onDelete} className="delete-button">
-          Eliminar Evento
+          Eliminar
         </button>
     </div>
   );
